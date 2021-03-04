@@ -7,12 +7,12 @@ namespace Graph
 {
     public static class Initializing
     {
-        public static Graph CreateGraph()
+        public static Graph CreateGraph(string path)
         {
             Graph graph = new Graph();
             List<Edge> edges = new List<Edge>();
 
-            string input = File.ReadAllText(@"../Graph/task.txt");
+            string input = File.ReadAllText(path);
 
             int arrDimension = Int32.Parse(input.Split("\n").ElementAt(0));
             graph.VerticesCount = arrDimension;

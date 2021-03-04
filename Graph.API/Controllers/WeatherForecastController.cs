@@ -40,7 +40,7 @@ namespace Graph.API.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            var graph = Initializing.CreateGraph();
+            var graph = Initializing.CreateGraph(@"../Graph/task.txt");
             var graphToReturn = KruskalAlgorithm.KruskalSolve(graph);
             List<Graph> listGraph = new List<Graph>
             {
