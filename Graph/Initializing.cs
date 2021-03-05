@@ -11,6 +11,7 @@ namespace Graph
         {
             Graph graph = new Graph();
             List<Edge> edges = new List<Edge>();
+            List<Node> nodes = new List<Node>();
 
             string input = File.ReadAllText(path);
 
@@ -39,7 +40,19 @@ namespace Graph
                             };
 
                             edges.Add(edge);
+                            
+                            if (nodes.Exists(x => x.Id == i))
+                                nodes.First(x => x.Id == i).Rank++;
+                            else
+                                nodes.Add(new Node { Id = i, Rank = 1 });
+
+                            if (nodes.Exists(x => x.Id == j))
+                                nodes.First(x => x.Id == j).Rank++;
+                            else
+                                nodes.Add(new Node { Id = j, Rank = 1 });
+
                         }
+
                     }
                     j++;
                 }
@@ -48,6 +61,7 @@ namespace Graph
 
             graph.EdgesCount = edges.Count;
             graph.Edges = edges.ToArray();
+            graph.Nodes = nodes.ToArray();
 
             return graph;
         }
