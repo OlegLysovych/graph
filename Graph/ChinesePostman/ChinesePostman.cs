@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Graph.ChinesePostman
 {
-    public  class ChinesePostman
+    public class ChinesePostman
     {
         public static Graph graph = new Graph();
         public static bool IsEvenDegree(Node[] nodes)
@@ -95,19 +95,24 @@ namespace Graph.ChinesePostman
                 var vNode = nodesStack.Peek();
                 if (edgesToCompile.Any(x => x.Source == vNode.Id || x.Destination == vNode.Id))
                 {
+                     Edge edgeToRemove = new Edge();
                     Node vNodeConnected = new Node();
                     if (edgesToCompile.Any(x => x.Source == vNode.Id))
                     {
                         vNodeConnected = nodesToCompile.First(x => x.Id == edgesToCompile.First(x => x.Source == vNode.Id).Destination);
                         nodesStack.Push(vNodeConnected);
+                        edgeToRemove = edgesToCompile.First(x => x.Destination == vNodeConnected.Id && x.Source == vNode.Id);
                     }
                     else if (edgesToCompile.Any(x => x.Destination == vNode.Id))
                     {
                         vNodeConnected = nodesToCompile.First(x => x.Id == edgesToCompile.First(x => x.Destination == vNode.Id).Source);
                         nodesStack.Push(vNodeConnected);
+                        edgeToRemove = edgesToCompile.First(x => x.Source == vNodeConnected.Id && x.Destination == vNode.Id);
+
                     }
-                    var edgeToRemove = edgesToCompile.First(x => x.Source == vNodeConnected.Id && x.Destination == vNode.Id
-                                                                        || x.Destination == vNodeConnected.Id && x.Source == vNode.Id);
+
+
+                                                                        // || x.Destination == vNodeConnected.Id && x.Source == vNode.Id);
                     if (edgeToRemove != null) edgesToCompile.Remove(edgeToRemove);
                 }
                 else

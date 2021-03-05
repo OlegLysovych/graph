@@ -1,19 +1,17 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, IterableDiffers, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Edge } from 'src/app/Data/Edge';
+import { Graph } from 'src/app/Data/Graph';
+import { GraphService } from 'src/app/_services/graph.service';
 import greuler from 'greuler';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { Edge } from '../Data/Edge';
-import { Graph } from '../Data/Graph';
-import { GraphService } from '../_services/graph.service';
 
 @Component({
-  selector: 'app-Graph',
-  templateUrl: './Graph.component.html',
-  styleUrls: ['./Graph.component.css'],
+  selector: 'app-Kruskal',
+  templateUrl: './Kruskal.component.html',
+  styleUrls: ['./Kruskal.component.css']
 })
-export class GraphComponent implements OnInit {
+export class KruskalComponent implements OnInit {
+
   graphArr: Graph[];
   graph: Graph;
   graphStarted: Graph;
@@ -29,12 +27,12 @@ export class GraphComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.loadGraph();
-    // this.startedEdgesToShow = this.computeEdgesForDisplay(this.graphStarted);
-    // this.startedNodesToShow = this.computeNodesForDisplay(this.graphStarted);
+    this.loadGraph();
+    this.startedEdgesToShow = this.computeEdgesForDisplay(this.graphStarted);
+    this.startedNodesToShow = this.computeNodesForDisplay(this.graphStarted);
 
-    // this.solvedEdgesToShow = this.computeEdgesForDisplay(this.graph);
-    // this.solvedNodesToShow = this.computeNodesForDisplay(this.graph);
+    this.solvedEdgesToShow = this.computeEdgesForDisplay(this.graph);
+    this.solvedNodesToShow = this.computeNodesForDisplay(this.graph);
   }
 
   startedClick(event: Event) {
@@ -42,6 +40,7 @@ export class GraphComponent implements OnInit {
     const instance = greuler({
       target: '#started',
       data: {
+        linkDistance: 150,
         nodes: this.startedNodesToShow,
         edges: this.startedEdgesToShow,
       },
@@ -52,6 +51,7 @@ export class GraphComponent implements OnInit {
     const instance = greuler({
       target: '#solved',
       data: {
+        linkDistance: 100,
         nodes: this.solvedNodesToShow,
         edges: this.solvedEdgesToShow,
       },
@@ -60,7 +60,7 @@ export class GraphComponent implements OnInit {
 
   loadGraph() {
     this.route.data.subscribe((data) => {
-      this.graphArr = data['graph'];
+      this.graphArr = data['kruskal'];
       this.graphStarted = this.graphArr[0];
       this.graph = this.graphArr[1];
     });
@@ -94,4 +94,5 @@ export class GraphComponent implements OnInit {
     }
     return edgesToReturn;
   }
+
 }

@@ -7,11 +7,15 @@ import { Graph } from '../Data/Graph';
   providedIn: 'root'
 })
 export class GraphService {
-  baseUrl = 'http://localhost:5000/weatherforecast';
+  baseUrl = 'http://localhost:5000/graph';
 
 constructor(private http: HttpClient) { }
 
-  getGraph() : Observable<Graph>{
-    return this.http.get<Graph>(this.baseUrl);
+  getGraphByKruskal() : Observable<Graph>{
+    return this.http.get<Graph>(this.baseUrl + "/Kruskal");
+  }
+  
+  getGraphByPostman() : Observable<Graph>{
+    return this.http.get<Graph>(this.baseUrl + "/ChinesePostman");
   }
 }

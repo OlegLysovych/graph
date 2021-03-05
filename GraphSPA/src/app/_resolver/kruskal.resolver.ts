@@ -7,11 +7,11 @@ import { catchError } from "rxjs/operators";
 
 @Injectable()
 
-export class GraphResolver implements Resolve<Graph>{
+export class KruskalResolver implements Resolve<Graph>{
     constructor(private graphService: GraphService, private router: Router){}
 
     resolve(route: ActivatedRouteSnapshot) : Observable<Graph> {
-        return this.graphService.getGraph().pipe(
+        return this.graphService.getGraphByKruskal().pipe(
             catchError(error => {
                 console.log("proplem");
                 this.router.navigate(['']);
