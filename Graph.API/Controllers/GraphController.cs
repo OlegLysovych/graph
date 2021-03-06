@@ -58,11 +58,6 @@ namespace Graph.API.Controllers
             }
             var eulerianPath = ChinesePostman.ChinesePostman.FindEulerianPath(newGraph);
             newGraph.Nodes = eulerianPath.ToArray();
-            // (List<Graph> graphs, List<Node> path) fullRespone;
-            // fullRespone.graphs = new List<Graph>();
-            // fullRespone.path = eulerianPath;
-            // fullRespone.graphs.Add(graph);
-            // fullRespone.graphs.Add(newGraph);
             List<Graph> fullResponse = new List<Graph>{graph, newGraph};
             return Ok(fullResponse);
         }

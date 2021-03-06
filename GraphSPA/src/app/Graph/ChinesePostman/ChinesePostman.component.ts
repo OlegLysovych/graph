@@ -64,12 +64,19 @@ export class ChinesePostmanComponent implements OnInit {
       },
     }).update();
   }
+  showPathByArrowClick(event: Event) {
+    for (let index = 0; index < this.instanceResolved.graph.edges.length; index++) {
+      const edge = this.instanceResolved.graph.edges[index]
+      const update = this.instanceResolved.graph.getEdge({id: edge.id})
+      update.directed = !update.directed;
+      this.instanceResolved.update({ skipLayout: true })
+    }
+  }
   showPathClick(event: Event) {
     for (let index = 0; index < this.graph.nodes.length; index++) {
       const element = this.graph.nodes[index];
       // this.instanceResolved.selector.traverseOutgoingEdges({ id: this.graph.nodes[index].id });
       // this.instanceResolved.selector.traverseIncomingEdges({ id:  this.graph.nodes[index + 1].id});
-
       setTimeout(() => {
         // this.instanceResolved.selector.highlightEdge({
         //   edge: this.instanceResolved.graph.getEdge({ source: element.id, target: this.graph.nodes[index + 1].id}),
@@ -84,7 +91,7 @@ export class ChinesePostmanComponent implements OnInit {
         //   },
         //   { keepStroke: false }
         // );
-      }, 2000 * index);
+      }, 1000 * index);
       this.instanceResolved.update({ skipLayout: true });
     }
   }

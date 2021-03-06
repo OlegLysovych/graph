@@ -110,9 +110,6 @@ namespace Graph.ChinesePostman
                         edgeToRemove = edgesToCompile.First(x => x.Source == vNodeConnected.Id && x.Destination == vNode.Id);
 
                     }
-
-
-                                                                        // || x.Destination == vNodeConnected.Id && x.Source == vNode.Id);
                     if (edgeToRemove != null) edgesToCompile.Remove(edgeToRemove);
                 }
                 else
