@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Graph.ChinesePostman;
+using Graph.Salesman_problem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -45,6 +46,41 @@ namespace Graph.API.Controllers
             };
             return Ok(listGraph);
         }
+        [HttpGet("Salesman")]
+        public async Task<IActionResult> GetSalesman()
+        {
+            var graph = Initializing.CreateGraph(@"../Graph/_SalesmanProblem.txt");
+            var matrix = Initializing.CreateMatrix(@"../Graph/_SalesmanProblem.txt");
+
+            BnB_matrix brunchAndBound = new BnB_matrix();
+
+            var edges = BnB_matrix.BranchAndBound(matrix);
+            var graphToReturn = (Graph)graph.Clone();
+            foreach (var item in edges)
+            {
+                if (graphToReturn.Edges.Any(x => x.Source == item.Source && x.Destination == item.Destination))
+                {
+                   continue;
+                }
+                else if (graphToReturn.Edges.Any(x => x.Destination == item.Source && x.Source == item.Destination))
+                {
+                   int temp = 0;
+                   temp = item.Source;
+                   item.Source = item.Destination;
+                   item.Destination = temp;
+                }
+            }
+            graphToReturn.EdgesCount = edges.Length;
+
+            graphToReturn.Edges = edges;
+
+            List<Graph> listGraph = new List<Graph>
+            {
+                graph,
+                graphToReturn
+            };
+            return Ok(listGraph);
+        }
         [HttpGet("ChinesePostman")]
         public async Task<IActionResult> GetChinesePostman()
         {
@@ -58,7 +94,7 @@ namespace Graph.API.Controllers
             }
             var eulerianPath = ChinesePostman.ChinesePostman.FindEulerianPath(newGraph);
             newGraph.Nodes = eulerianPath.ToArray();
-            List<Graph> fullResponse = new List<Graph>{graph, newGraph};
+            List<Graph> fullResponse = new List<Graph> { graph, newGraph };
             return Ok(fullResponse);
         }
     }

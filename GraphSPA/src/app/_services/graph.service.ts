@@ -18,4 +18,8 @@ constructor(private http: HttpClient) { }
   getGraphByPostman() : Observable<Graph>{
     return this.http.get<Graph>(this.baseUrl + "/ChinesePostman");
   }
+
+  getGraphBySalesman() : Observable<Graph>{
+    return this.http.get<Graph>(this.baseUrl + "/Salesman");
+  }
 }
