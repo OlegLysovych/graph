@@ -54,22 +54,22 @@ namespace Graph.API.Controllers
 
             BnB_matrix brunchAndBound = new BnB_matrix();
 
-            var edges = BnB_matrix.BranchAndBound(matrix);
+            var edges = brunchAndBound.BranchAndBound(matrix);
             var graphToReturn = (Graph)graph.Clone();
-            foreach (var item in edges)
-            {
-                if (graphToReturn.Edges.Any(x => x.Source == item.Source && x.Destination == item.Destination))
-                {
-                   continue;
-                }
-                else if (graphToReturn.Edges.Any(x => x.Destination == item.Source && x.Source == item.Destination))
-                {
-                   int temp = 0;
-                   temp = item.Source;
-                   item.Source = item.Destination;
-                   item.Destination = temp;
-                }
-            }
+            // foreach (var item in edges)
+            // {
+            //     if (graphToReturn.Edges.Any(x => x.Source == item.Source && x.Destination == item.Destination))
+            //     {
+            //        continue;
+            //     }
+            //     else if (graphToReturn.Edges.Any(x => x.Destination == item.Source && x.Source == item.Destination))
+            //     {
+            //        int temp = 0;
+            //        temp = item.Source;
+            //        item.Source = item.Destination;
+            //        item.Destination = temp;
+            //     }
+            // }
             graphToReturn.EdgesCount = edges.Length;
 
             graphToReturn.Edges = edges;

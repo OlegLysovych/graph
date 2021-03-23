@@ -15,7 +15,7 @@ namespace Graph
 
             BnB_matrix brunchAndBound = new BnB_matrix();
 
-            var edges = BnB_matrix.BranchAndBound(matrix);
+            var edges = brunchAndBound.BranchAndBound(matrix);
             var graphToReturn = (Graph)graph.Clone();
             foreach (var item in edges)
             {
