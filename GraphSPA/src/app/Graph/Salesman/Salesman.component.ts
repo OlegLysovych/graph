@@ -42,7 +42,7 @@ export class SalesmanComponent implements OnInit {
     this.instanceStarted = greuler({
       target: '#started',
       data: {
-        linkDistance: 150,
+        linkDistance: 130,
         nodes: this.startedNodesToShow,
         edges: this.startedEdgesToShow,
       },
@@ -54,7 +54,7 @@ export class SalesmanComponent implements OnInit {
     this.instanceResolved = greuler({
       target: '#solved',
       data: {
-        linkDistance: 150,
+        linkDistance: 130,
         nodes: this.solvedNodesToShow,
         edges: this.solvedEdgesToShow,
       },

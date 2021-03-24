@@ -73,14 +73,13 @@ namespace Graph.Salesman_problem
                 {
                     matrix[i, c] = -1;
                 }
-                costWithEdge = lowestCost + CalculateSomeShit(matrix);//вартість гамільтонового шляху у скороченій матриці = попередня вартість + сума констант приведеної матриці
-
+                var newcost = CalculateSomeCostWithNewEdge(matrix);//вартість гамільтонового шляху у скороченій матриці = попередня вартість + сума констант приведеної матриці
+                costWithEdge = lowestCost + newcost;
                 matrices.Add((matrix, costWithEdge));
             }
             else
             {
                 _cost = _edges.Sum(x => x.Weight);
-                lowestCost = lowestCost;
                 return _edges.ToArray();
             }
 
@@ -89,7 +88,7 @@ namespace Graph.Salesman_problem
                 var rollbackMatrix = matrices.First(x => x.pathCost < costWithEdge).matrix;
                 int a = 0; int b = 0; int m = 0;
                 rollbackMatrix = RemoveMaxCoef(rollbackMatrix, out a, out b, out m);
-                rollbackMatrix[a,b] = -1;
+                rollbackMatrix[a, b] = -1;
                 BranchAndBound(rollbackMatrix);
             }
             else
@@ -98,6 +97,7 @@ namespace Graph.Salesman_problem
                 {
                     Source = r,
                     Destination = c,
+                    // Weight = StaticMatrix[r, c] != 0 ? StaticMatrix[r, c] : costWithEdge - lowestCost
                     Weight = StaticMatrix[r, c]
                 });
                 if (_edges.Count >= 2 && _edges.SkipLast(1).Last().Source == _edges.Last().Destination)//якщо початок попереднього ребра і кінець наступного ребра однакові
@@ -110,7 +110,7 @@ namespace Graph.Salesman_problem
         }
 
 
-        private static int CalculateSomeShit(int[,] matrix)
+        private static int CalculateSomeCostWithNewEdge(int[,] matrix)
         {
             int cost = 0;
             for (int i = 0; i < matrix.GetLength(0); i++)

@@ -200,7 +200,7 @@ namespace Graph
                         if (i == j)
                             matrixAdjacency[i, j] = -1;
                         else
-                            matrixAdjacency[i, j] = int.MaxValue;
+                            matrixAdjacency[i, j] = 0;
                     }
                         
                     // if (i == j)
