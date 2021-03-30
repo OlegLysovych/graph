@@ -2,6 +2,7 @@
 using System.Linq;
 using Graph.ChinesePostman;
 using Graph.Salesman_problem;
+using Graph.Flow;
 
 namespace Graph
 {
@@ -10,30 +11,12 @@ namespace Graph
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            var graph = Initializing.CreateGraph(@"../Graph/_SalesmanProblem.txt");
-            var matrix = Initializing.CreateMatrix(@"../Graph/_SalesmanProblem.txt");
+            var graph = Initializing.CreateGraph(@"../Graph/_Flow.txt");
+            // var matrix = Initializing.CreateMatrix(@"../Graph/_SalesmanProblem.txt");
 
-            BnB_matrix brunchAndBound = new BnB_matrix();
+            FlowCalc flow = new FlowCalc(graph);
+            flow.FindMaximumFlow();
 
-            var edges = brunchAndBound.BranchAndBound(matrix);
-            var graphToReturn = (Graph)graph.Clone();
-            foreach (var item in edges)
-            {
-                if (graphToReturn.Edges.Any(x => x.Source == item.Source && x.Destination == item.Destination))
-                {
-                    continue;
-                }
-                else if (graphToReturn.Edges.Any(x => x.Destination == item.Source && x.Source == item.Destination))
-                {
-                    int temp = 0;
-                    temp = item.Source;
-                    item.Source = item.Destination;
-                    item.Destination = temp;
-                }
-            }
-            graphToReturn.EdgesCount = edges.Length;
-
-            graphToReturn.Edges = edges;
         }
     }
 }

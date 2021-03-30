@@ -15,6 +15,9 @@ namespace Graph
 
             string input = File.ReadAllText(path);
 
+            if (input.Any(x => x.Equals('r')))
+                input = input.Replace("\r", "");
+
             int arrDimension = Int32.Parse(input.Split("\n").ElementAt(0));
             graph.VerticesCount = arrDimension;
 

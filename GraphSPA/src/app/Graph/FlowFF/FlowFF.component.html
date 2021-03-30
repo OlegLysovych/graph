@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- <button (click)="postGraph(graph)" type="”button”">ButtonSend</button> -->
+    <div class="split left">
+      <h1>Task:</h1>
+      <div class="centered">
+        <button class="button" (click)="startedClick($event)" type="”button”">
+          Started Graph
+        </button>
+        <div id="started" style="width: 100vw; height: 100vh"></div>
+      </div>
+    </div>
+    <div class="split right">
+      <h1>Solved salesman problem</h1>
+      <div class="centered">
+        <button class="button" (click)="solvedClick($event)" type="”button”">
+          Solved Graph
+        </button>
+        <button class="button" (click)="showPathClick($event)" type="”button”">
+          Show path
+        </button>
+        <div id="solved" style="width: 100vw; height: 100vh"></div>
+      </div>
+    </div>
+    <script src="./Graph.component.ts"></script>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-6"></div>
+      </div>
+    </div>
+    <h1 class="flow">FLOW COST = {{this.flowCost}}</h1>
+  </body>
+</html>

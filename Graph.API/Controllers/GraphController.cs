@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Graph.ChinesePostman;
+using Graph.Flow;
 using Graph.Salesman_problem;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -95,6 +96,31 @@ namespace Graph.API.Controllers
             var eulerianPath = ChinesePostman.ChinesePostman.FindEulerianPath(newGraph);
             newGraph.Nodes = eulerianPath.ToArray();
             List<Graph> fullResponse = new List<Graph> { graph, newGraph };
+            return Ok(fullResponse);
+        }
+
+        [HttpGet("FlowByFF")]
+        public async Task<IActionResult> GetMaxFlowByFF()
+        {
+            var graph = Initializing.CreateGraph(@"../Graph/_Flow.txt");
+
+            FlowCalc flowCalc = new FlowCalc(graph);
+            var flow = flowCalc.FindMaximumFlow();
+
+            var newGraph = (Graph)graph.Clone();
+            
+            foreach (var item in flow)
+            {
+                newGraph.Edges.Where(x => x.Source == item.Edge.Source && x.Destination == item.Edge.Destination && x.Weight == item.Edge.Weight).Select(x => {x.Weight = item.Flow; return x;}).ToArray();
+            }
+            // (Graph graph, List<FlowModel> flow) fullResponse;
+
+            List<Graph> fullResponse = new List<Graph>();
+            // fullResponse.graph = graph;
+            // fullResponse.flow = flow;
+
+            fullResponse.Add(graph);
+            fullResponse.Add(newGraph);
             return Ok(fullResponse);
         }
     }

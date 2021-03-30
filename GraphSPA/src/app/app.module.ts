@@ -18,6 +18,8 @@ import { ChinesePostmanComponent } from './Graph/ChinesePostman/ChinesePostman.c
 import { NavComponent } from './Graph/nav/nav.component';
 import { SalesmanResolver } from './_resolver/salesman.resolver';
 import { SalesmanComponent } from './Graph/Salesman/Salesman.component';
+import { FlowFFComponent } from './Graph/FlowFF/FlowFF.component';
+import { FlowResolver } from './_resolver/flow.resolver';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,7 @@ import { SalesmanComponent } from './Graph/Salesman/Salesman.component';
     ChinesePostmanComponent,
     NavComponent,
     SalesmanComponent,
+    FlowFFComponent,
   ],
   imports: [
     BrowserModule,
@@ -36,7 +39,7 @@ import { SalesmanComponent } from './Graph/Salesman/Salesman.component';
     FormsModule,
     RouterModule.forRoot(appRoutes),
   ],
-  providers: [GraphService, KruskalResolver, PostmanResolver, SalesmanResolver],
+  providers: [GraphService, KruskalResolver, PostmanResolver, SalesmanResolver, FlowResolver],
   bootstrap: [AppComponent],
   exports: [],
 })
