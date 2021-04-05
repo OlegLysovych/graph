@@ -205,7 +205,7 @@ namespace Graph
                         else
                             matrixAdjacency[i, j] = 0;
                     }
-                        
+
                     // if (i == j)
                     //     matrixAdjacency[i, j] = -1;
                     // else

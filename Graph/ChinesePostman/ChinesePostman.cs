@@ -28,17 +28,20 @@ namespace Graph.ChinesePostman
             {
                 return new List<(Node, Node)>() { (firstNode, oddNodes.Last()) };
             }
-            foreach (var node in oddNodes.Skip(1))
+            else
             {
-                currentPair = (firstNode, node);
-                List<(Node, Node)> newPair = GetOddNodesCombinations(oddNodes.Except(new List<Node>() { node, firstNode }).ToList());
-                int weight =
-                    CalculateWeightOfPairs(newPair);
-                if (weight < minWeight)
+                foreach (var node in oddNodes.Skip(1))
                 {
-                    minWeight = weight;
-                    bestPairs = new List<(Node, Node)>() { currentPair };
-                    bestPairs.AddRange(newPair);
+                    currentPair = (firstNode, node);
+                    List<(Node, Node)> newPair = GetOddNodesCombinations(oddNodes.Except(new List<Node>() { node, firstNode }).ToList());
+                    int weight =
+                        CalculateWeightOfPairs(newPair);
+                    if (weight < minWeight)
+                    {
+                        minWeight = weight;
+                        bestPairs = new List<(Node, Node)>() { currentPair };
+                        bestPairs.AddRange(newPair);
+                    }
                 }
             }
 
@@ -49,8 +52,9 @@ namespace Graph.ChinesePostman
             int sum = 0;
             foreach (var pair in pairs)
             {
-                sum += ChinesePostman.graph.Edges.FirstOrDefault(x => x.Source == pair.Item1.Id && x.Destination == pair.Item2.Id
-                                                                    || x.Destination == pair.Item1.Id && x.Source == pair.Item2.Id).Weight;
+                var temporary = ChinesePostman.graph.Edges.FirstOrDefault(x => x.Source == pair.Item1.Id && x.Destination == pair.Item2.Id
+                                                                    || x.Destination == pair.Item1.Id && x.Source == pair.Item2.Id);
+                sum += temporary is null ? int.MaxValue : temporary.Weight;
             }
 
             return sum;
@@ -61,15 +65,22 @@ namespace Graph.ChinesePostman
             var edges = ChinesePostman.graph.Edges.ToList();
             foreach (var pair in pairsOfOddNodes)
             {
-                edges.Add(new Edge()
+                if (pair.Item1 != null && pair.Item2 != null)
                 {
-                    Source = pair.Item1.Id,
-                    Destination = pair.Item2.Id,
-                    Weight = ChinesePostman.graph.Edges.FirstOrDefault(x => x.Source == pair.Item1.Id && x.Destination == pair.Item2.Id
-                                                                        || x.Destination == pair.Item1.Id && x.Source == pair.Item2.Id).Weight
-                });
-                ChinesePostman.graph.Nodes.First(x => x.Id == pair.Item1.Id).Rank++;
-                ChinesePostman.graph.Nodes.First(x => x.Id == pair.Item2.Id).Rank++;
+                    var temporary = ChinesePostman.graph.Edges.FirstOrDefault(x => x.Source == pair.Item1.Id && x.Destination == pair.Item2.Id
+                                                       || x.Destination == pair.Item1.Id && x.Source == pair.Item2.Id);
+                    if (temporary != null)
+                    {
+                        edges.Add(new Edge()
+                        {
+                            Source = pair.Item1.Id,
+                            Destination = pair.Item2.Id,
+                            Weight = temporary.Weight
+                        });
+                        ChinesePostman.graph.Nodes.First(x => x.Id == pair.Item1.Id).Rank++;
+                        ChinesePostman.graph.Nodes.First(x => x.Id == pair.Item2.Id).Rank++;
+                    }
+                }
             }
             return edges;
         }
@@ -95,7 +106,7 @@ namespace Graph.ChinesePostman
                 var vNode = nodesStack.Peek();
                 if (edgesToCompile.Any(x => x.Source == vNode.Id || x.Destination == vNode.Id))
                 {
-                     Edge edgeToRemove = new Edge();
+                    Edge edgeToRemove = new Edge();
                     Node vNodeConnected = new Node();
                     if (edgesToCompile.Any(x => x.Source == vNode.Id))
                     {
